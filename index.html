@@ -34,9 +34,7 @@
             overflow-x: hidden;
         }
         
-        section {
-            padding: 80px 0;
-        }
+        section { padding: 80px 0; }
 
         .section-title {
             font-size: 2.5rem;
@@ -45,17 +43,11 @@
             text-align: center;
             position: relative;
         }
-
         .section-title::after {
-            content: '';
-            width: 60px;
-            height: 4px;
+            content: ''; width: 60px; height: 4px;
             background-color: var(--accent);
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 2px;
+            position: absolute; bottom: -10px; left: 50%;
+            transform: translateX(-50%); border-radius: 2px;
         }
 
         /* ===== NAVBAR ===== */
@@ -64,96 +56,101 @@
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-        .navbar-brand {
-            font-weight: 700;
-            color: var(--text-main) !important;
-            letter-spacing: 1px;
-            font-size: 1.5rem;
-        }
-        .navbar-brand span {
-            color: var(--accent);
-        }
-        .nav-link {
-            color: var(--text-muted) !important;
-            font-weight: 500;
-            transition: color 0.3s;
-            margin-left: 15px;
-        }
-        .nav-link:hover, .nav-link.active {
-            color: var(--accent) !important;
-        }
-        .navbar-toggler {
-            border: none;
-        }
+        .navbar-brand { font-weight: 700; color: var(--text-main) !important; letter-spacing: 1px; font-size: 1.5rem; }
+        .navbar-brand span { color: var(--accent); }
+        .nav-link { color: var(--text-muted) !important; font-weight: 500; transition: color 0.3s; margin-left: 15px; }
+        .nav-link:hover, .nav-link.active { color: var(--accent) !important; }
+        .navbar-toggler { border: none; }
 
         /* ===== HERO SECTION ===== */
         .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            position: relative;
+            min-height: 100vh; display: flex; align-items: center; position: relative;
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            padding-top: 80px;
-            overflow: hidden;
+            padding-top: 80px; overflow: hidden;
         }
 
-        /* Video Background Logic */
         .video-background-wrapper {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            z-index: 0;
-            overflow: hidden;
-            pointer-events: none;
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0;
+            overflow: hidden; pointer-events: none;
         }
-        .video-background {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; 
-            opacity: 0.5; 
-            mix-blend-mode: screen; 
+        .video-background { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; mix-blend-mode: screen; }
+        .hero .container { position: relative; z-index: 2; }
+
+        /* ===== CONTINUOUS GLASS SWEEP KEYFRAME ===== */
+        @keyframes glassSweepContinuous {
+            0% { left: -150%; }
+            100% { left: 200%; }
         }
 
-        .hero .container {
-            position: relative;
-            z-index: 2;
+        /* ===== HERO CONTENT BOX ===== */
+        .hero-content-box {
+            padding: 40px; border-radius: 20px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-top-color: rgba(255, 255, 255, 0.4); border-left-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            position: relative; z-index: 1; overflow: hidden;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .hero-content-box > * { position: relative; z-index: 2; }
+
+        .hero-content-box::before {
+            content: ""; position: absolute; inset: 0; border-radius: 20px; padding: 2px;
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            background-size: 400%;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude;
+            opacity: 0.5; animation: rgbGlow 6s linear infinite; z-index: 3; pointer-events: none; transition: opacity 0.4s ease;
         }
 
-        .hero-subtitle {
-            font-size: 1.5rem;
+        .hero-content-box::after {
+            content: ""; position: absolute; top: 0; left: -150%; width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg); 
+            animation: glassSweepContinuous 2.5s infinite linear;
+            z-index: 0; pointer-events: none;
+        }
+
+        .hero-content-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.4), 0 0 25px rgba(14, 165, 233, 0.3);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+        }
+        .hero-content-box:hover::before { opacity: 1; animation: rgbGlow 3s linear infinite; }
+
+        .hero-subtitle { font-size: 1.5rem; color: var(--accent); font-weight: 500; margin-bottom: 0.5rem; }
+        .hero-title { font-size: 3.8rem; font-weight: 700; margin-bottom: 1rem; line-height: 1.2; }
+        
+        /* ===== UPDATED PREMIUM TYPING TEXT ===== */
+        .typing-text { 
+            color: #ffffff; 
+            font-size: 1.6rem; 
+            font-weight: 600; 
+            height: 40px; 
+            margin-bottom: 2.5rem; 
+            text-shadow: 0 0 12px rgba(14, 165, 233, 0.8), 0 0 25px rgba(14, 165, 233, 0.4);
+            letter-spacing: 0.5px;
+        }
+        /* Blinking Cursor Effect */
+        .typing-text::after {
+            content: '|';
             color: var(--accent);
-            font-weight: 500;
-            margin-bottom: 0.5rem;
+            animation: blinkCursor 0.8s infinite;
+            margin-left: 3px;
+            text-shadow: none;
+            font-weight: 400;
         }
-        .hero-title {
-            font-size: 3.8rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
-        .typing-text {
-            color: var(--text-muted);
-            font-size: 1.3rem;
-            height: 35px;
-            margin-bottom: 2.5rem;
+        @keyframes blinkCursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
         
-        /* Profile Image Styles */
-        .profile-wrapper {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
         .profile-img {
-            width: 320px;
-            height: 320px;
-            aspect-ratio: 1 / 1; 
-            object-fit: cover; 
-            border-radius: 50%;
-            border: 4px solid var(--accent);
+            width: 320px; height: 320px; aspect-ratio: 1 / 1; object-fit: cover; 
+            border-radius: 50%; border: 4px solid var(--accent);
             box-shadow: 0 0 30px rgba(14, 165, 233, 0.4);
-            background-color: var(--bg-card); 
-            display: block;
+            background-color: var(--bg-card); display: block; margin: 0 auto;
             animation: float 6s ease-in-out infinite;
         }
 
@@ -163,143 +160,287 @@
             100% { transform: translateY(0px); }
         }
 
-        /* Buttons */
-        .btn-custom {
-            background-color: var(--accent);
-            color: #fff;
-            padding: 12px 30px;
-            border-radius: 30px;
-            font-weight: 500;
-            border: none;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
+        /* ===== UPDATED PREMIUM BUTTONS ===== */
+        .btn-custom, .btn-outline-custom {
+            padding: 14px 35px; 
+            border-radius: 50px; 
+            font-weight: 600; 
+            letter-spacing: 0.5px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            text-decoration: none; 
+            display: inline-block; 
             margin-bottom: 10px;
+            margin-right: 15px; 
+            font-size: 1rem;
         }
-        .btn-custom:hover {
-            background-color: var(--accent-hover);
-            color: #fff;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(14, 165, 233, 0.3);
+        .btn-custom { 
+            background: linear-gradient(135deg, var(--accent), #2563eb); 
+            color: #fff !important; 
+            border: none; 
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.4), inset 0 2px 2px rgba(255, 255, 255, 0.2); 
         }
-        .btn-outline-custom {
-            border: 2px solid var(--accent);
-            color: var(--accent);
-            padding: 10px 30px;
-            border-radius: 30px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            background: transparent;
-            text-decoration: none;
-            display: inline-block;
-            margin-bottom: 10px;
+        .btn-custom:hover { 
+            transform: translateY(-5px) scale(1.03); 
+            box-shadow: 0 15px 35px rgba(14, 165, 233, 0.6), inset 0 2px 2px rgba(255, 255, 255, 0.3); 
         }
-        .btn-outline-custom:hover {
-            background: var(--accent);
-            color: #fff;
-            transform: translateY(-3px);
+        .btn-outline-custom { 
+            border: 2px solid rgba(14, 165, 233, 0.8); 
+            color: #ffffff !important; 
+            background: rgba(14, 165, 233, 0.15); 
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .btn-outline-custom:hover { 
+            background: linear-gradient(135deg, var(--accent), #2563eb); 
+            border-color: transparent;
+            transform: translateY(-5px) scale(1.03); 
+            box-shadow: 0 15px 35px rgba(14, 165, 233, 0.5);
         }
 
-        /* ===== EXPERIENCE & CARDS ===== */
         .bg-darker { background-color: #0b1120; z-index: 5; position: relative;}
-        
-        .experience-card, .project-card, .skill-box, .contact-item {
-            background: var(--bg-card);
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-        }
-        
-        .experience-card {
-            padding: 30px;
-            border-radius: 15px;
-            border-left: 4px solid var(--accent);
+
+        /* ===== ENHANCED GLASSMORPHISM (SKILLS, EXPERIENCE, PROJECTS) ===== */
+        .skill-box, .experience-card, .project-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02)) !important;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            /* Standard glass border */
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            border-top-color: rgba(255, 255, 255, 0.35) !important; 
+            border-left-color: rgba(255, 255, 255, 0.35) !important; 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            
             position: relative;
-            overflow: hidden; 
-        }
-        .experience-card:hover { transform: translateX(10px); }
-        
-        .experience-logo {
-            position: absolute;
-            top: 50%;
-            right: 30px; 
-            transform: translateY(-50%);
-            width: 180px; 
-            opacity: 1; 
             z-index: 1;
-            object-fit: contain;
-            border-radius: 8px;
-        }
-        
-        .experience-card-content {
-            position: relative;
-            z-index: 2;
-            padding-right: 210px; 
-        }
-        .experience-card p, .experience-card ul {
-            color: var(--text-light) !important; 
+            overflow: hidden; 
+            transition: all 0.4s ease !important;
+            border-radius: 15px; 
+            cursor: pointer;
         }
 
-        /* ===== SKILLS & PROJECTS ===== */
-        .skill-box {
-            padding: 25px;
-            border-radius: 12px;
-            text-align: center;
+        .skill-box, .experience-card { cursor: default; }
+
+        .skill-box > *, .experience-card > *, .project-card > * {
+            position: relative;
+            z-index: 10;
+        }
+
+        .skill-box::after, .experience-card::after, .project-card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 50%;
             height: 100%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.4) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: skewX(-25deg);
+            z-index: 2; 
+            pointer-events: none;
         }
-        .skill-box:hover {
+
+        .reveal.active .skill-box::after, 
+        .reveal.active .experience-card::after, 
+        .reveal.active .project-card::after {
+            animation: glassSweepContinuous 2s infinite linear;
+        }
+
+        /* ===== CONTINUOUS RGB FLOW BY DEFAULT ===== */
+        .skill-box::before, .experience-card::before, .project-card::before {
+            content: "";
+            position: absolute;
+            inset: 0; 
+            border-radius: 15px; 
+            padding: 2px; /* Border thickness */
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            background-size: 400%;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            
+            /* ACTIVE BY DEFAULT */
+            opacity: 0.7; /* Softly visible by default */
+            animation: rgbGlow 4s linear infinite; /* Constant spinning */
+            
+            transition: opacity 0.4s ease, background-size 0.4s ease;
+            z-index: 3; 
+            pointer-events: none;
+        }
+
+        /* Premium Hover Lift */
+        .skill-box:hover, .experience-card:hover, .project-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 
+                        0 0 15px rgba(0, 255, 255, 0.2), 
+                        0 0 15px rgba(255, 0, 255, 0.2) !important;
+            border-color: transparent !important;
         }
+
+        /* Brighten and speed up RGB on hover */
+        .skill-box:hover::before, .experience-card:hover::before, .project-card:hover::before {
+            opacity: 1; /* Full brightness */
+            animation: rgbGlow 2.5s linear infinite; /* Faster spin */
+        }
+
+        @keyframes rgbGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .skill-box { padding: 25px; text-align: center; height: 100%; }
+        .experience-card { padding: 30px; }
+        .project-card { padding: 25px; height: 100%; display: flex; flex-direction: column; }
+
+        .experience-logo {
+            position: absolute; top: 50%; right: 30px; transform: translateY(-50%);
+            width: 180px; z-index: 10; object-fit: contain; border-radius: 8px;
+        }
+        .experience-card-content { padding-right: 210px; }
+        .experience-card p, .experience-card ul { color: var(--text-light) !important; }
+
         .skill-icon { font-size: 2.5rem; color: var(--accent); margin-bottom: 15px; }
         .skill-list { list-style: none; padding: 0; color: var(--text-muted); font-size: 0.95rem; }
         .skill-list li { margin-bottom: 8px; }
 
-        .project-card {
-            border-radius: 15px;
-            padding: 25px;
-            height: 100%;
-        }
-        .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
-            border-color: var(--accent);
-        }
         .project-title { font-size: 1.25rem; font-weight: 600; color: #fff; }
         .badge-tech {
-            background: rgba(14, 165, 233, 0.1);
-            color: var(--accent);
-            font-weight: 400;
-            margin-right: 5px;
-            margin-bottom: 5px;
-            border: 1px solid rgba(14, 165, 233, 0.3);
-            display: inline-block;
+            background: rgba(14, 165, 233, 0.1); color: var(--accent); font-weight: 400;
+            margin-right: 5px; margin-bottom: 5px; border: 1px solid rgba(14, 165, 233, 0.3); display: inline-block;
         }
-        .project-desc { color: var(--text-light); font-size: 0.95rem; line-height: 1.6; } 
+        .project-desc { color: var(--text-light); font-size: 0.95rem; line-height: 1.6; margin-bottom: auto;} 
+        .project-hint { display: block; margin-top: 15px; color: var(--accent); font-size: 0.85rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+        .project-card:hover .project-hint { color: #fff; }
 
+        /* ===== CONTACT ===== */
         .contact-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 20px;
-            border-radius: 12px;
+            display: flex; align-items: center; margin-bottom: 20px; padding: 20px;
+            border-radius: 12px; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05);
         }
         .contact-icon {
-            background: rgba(14, 165, 233, 0.1);
-            color: var(--accent);
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-size: 1.2rem;
-            margin-right: 20px;
-            flex-shrink: 0; 
+            background: rgba(14, 165, 233, 0.1); color: var(--accent); width: 50px; height: 50px;
+            display: flex; align-items: center; justify-content: center; border-radius: 50%;
+            font-size: 1.2rem; margin-right: 20px; flex-shrink: 0; 
         }
         .contact-text h5 { margin: 0 0 5px 0; font-size: 1rem; color: #fff; }
         .contact-text p, .contact-text a { margin: 0; color: var(--text-light); font-size: 0.95rem; text-decoration: none; word-break: break-all; }
         .contact-text a:hover { color: var(--accent); }
+
+        /* ===== 3D BOOK MODAL STYLES (FAST OPEN, SLOW CLOSE) ===== */
+        .book-modal-wrapper {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 9999; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; 
+            transition: opacity 0.5s ease;
+            perspective: 1500px;
+        }
+        .book-modal-wrapper.active { opacity: 1; pointer-events: all; }
+
+        .book-close-btn {
+            position: absolute; top: 30px; right: 40px; background: transparent; border: none;
+            color: #fff; font-size: 2rem; cursor: pointer; transition: color 0.2s; z-index: 10;
+        }
+        .book-close-btn:hover { color: var(--accent); }
+
+        .book-core {
+            width: 35vw; height: 70vh; max-width: 600px; min-width: 450px;
+            position: relative; 
+            transform-style: preserve-3d;
+            will-change: transform;
+            transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .book-cover {
+            position: absolute; width: 100%; height: 100%;
+            transform-origin: left center; transform-style: preserve-3d;
+            z-index: 2;
+            will-change: transform;
+            transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .book-modal-wrapper.active .book-core.open { 
+            transform: translateX(17.5vw); 
+            transition: transform 0.3s ease-out; 
+        }
+        .book-modal-wrapper.active .book-core.open .book-cover { 
+            transform: rotateY(-180deg); 
+            transition: transform 0.3s ease-out; 
+        }
+
+        .book-page-right {
+            position: absolute; width: 100%; height: 100%;
+            background: #1e293b; border-radius: 0 15px 15px 0;
+            box-shadow: inset 30px 0 50px rgba(0,0,0,0.6); 
+            padding: 40px; overflow-y: auto; border: 1px solid rgba(255,255,255,0.1); border-left: none;
+        }
+        
+        .book-page-right::-webkit-scrollbar { width: 6px; }
+        .book-page-right::-webkit-scrollbar-track { background: transparent; }
+        .book-page-right::-webkit-scrollbar-thumb { background: rgba(14, 165, 233, 0.5); border-radius: 10px; }
+
+        .cover-front, .cover-back {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+            border-radius: 15px 0 0 15px; border: 1px solid rgba(255,255,255,0.15);
+        }
+        .cover-front {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 40px;
+        }
+        .cover-back {
+            transform: rotateY(180deg); background: #1e293b; padding: 40px; border-right: none;
+            box-shadow: inset -30px 0 50px rgba(0,0,0,0.6);
+        }
+
+        .resp-list { padding-left: 20px; color: var(--text-light); font-size: 0.95rem; line-height: 1.8; margin-top: 20px;}
+        .resp-list li { margin-bottom: 15px; }
+
+        /* ===== MOBILE RESPONSIVE DESIGN ===== */
+        @media (max-width: 991px) {
+            .hero-title { font-size: 3rem; }
+            .hero { text-align: center; }
+            .hero .d-flex { justify-content: center; }
+            
+            .book-core { width: 85vw; height: 40vh; min-width: 0; }
+            .book-cover { transform-origin: top center; }
+            
+            .book-modal-wrapper.active .book-core.open { 
+                transform: translateY(20vh); 
+                transition: transform 0.3s ease-out; 
+            }
+            .book-modal-wrapper.active .book-core.open .book-cover { 
+                transform: rotateX(180deg); 
+                transition: transform 0.3s ease-out; 
+            }
+
+            .cover-back { transform: rotateX(180deg); }
+            .book-page-right { border-radius: 0 0 15px 15px; box-shadow: inset 0 30px 50px rgba(0,0,0,0.6); border-left: 1px solid rgba(255,255,255,0.1); border-top: none; }
+            .cover-front, .cover-back { border-radius: 15px 15px 0 0; }
+            .cover-back { box-shadow: inset 0 -30px 50px rgba(0,0,0,0.6); }
+        }
+        
+        @media (max-width: 768px) {
+            section { padding: 60px 0; }
+            .section-title { font-size: 2rem; margin-bottom: 2rem; }
+            .hero-content-box { padding: 25px; } 
+            .hero-subtitle { font-size: 1.2rem; }
+            .hero-title { font-size: 2.3rem; }
+            
+            /* Responsive adjustments for new premium elements */
+            .typing-text { font-size: 1.2rem; margin-bottom: 2rem; height: 30px; }
+            .btn-custom, .btn-outline-custom { padding: 12px 25px; font-size: 0.85rem; margin-right: 5px; }
+            
+            .profile-img { width: 230px; height: 230px; margin-top: 20px; }
+            .experience-card { padding: 20px; }
+            .experience-card-content { padding-right: 0; } 
+            .experience-logo { position: relative; top: auto; right: auto; transform: none; width: 140px; margin-bottom: 20px; display: block; }
+            .book-page-right, .cover-back { padding: 20px; }
+            .book-close-btn { top: 15px; right: 20px; }
+        }
 
         /* ===== SCROLL ANIMATION ===== */
         .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s ease; }
@@ -307,63 +448,12 @@
 
         /* ===== AUDIO TOGGLE BUTTON ===== */
         .audio-toggle {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: var(--accent);
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            z-index: 1000;
-            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.5);
+            position: fixed; bottom: 30px; right: 30px; background-color: var(--accent); color: white;
+            width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center;
+            align-items: center; cursor: pointer; z-index: 1000; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.5);
             transition: all 0.3s ease;
         }
-        .audio-toggle:hover {
-            transform: scale(1.1);
-            background-color: var(--accent-hover);
-        }
-
-        /* ===== MOBILE RESPONSIVE DESIGN ===== */
-        @media (max-width: 991px) {
-            .hero-title { font-size: 3rem; }
-            .profile-img { width: 280px; height: 280px; margin-top: 40px; }
-            .hero { text-align: center; }
-            .hero .d-flex { justify-content: center; }
-        }
-        
-        @media (max-width: 768px) {
-            section { padding: 60px 0; }
-            .section-title { font-size: 2rem; margin-bottom: 2rem; }
-            
-            .hero-subtitle { font-size: 1.2rem; }
-            .hero-title { font-size: 2.3rem; }
-            .typing-text { font-size: 1.1rem; margin-bottom: 2rem; }
-            .profile-img { width: 230px; height: 230px; margin-top: 20px; }
-            
-            .experience-card { padding: 20px; }
-            .experience-card h4 { font-size: 1.2rem; margin-bottom: 10px; }
-            .experience-card ul { padding-left: 15px; }
-            
-            .experience-card-content { padding-right: 0; } 
-            .experience-logo {
-                position: relative; 
-                top: auto;
-                right: auto;
-                transform: none;
-                width: 140px;
-                margin-bottom: 20px;
-                display: block;
-            }
-            
-            .btn-custom, .btn-outline-custom { padding: 10px 20px; font-size: 0.9rem; }
-            
-            .audio-toggle { bottom: 20px; right: 20px; width: 45px; height: 45px; }
-        }
+        .audio-toggle:hover { transform: scale(1.1); background-color: var(--accent-hover); }
     </style>
 </head>
 <body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="70">
@@ -371,7 +461,6 @@
     <!-- Audio Element -->
     <audio id="bg-audio" src="image/audio.mp3" preload="auto"></audio>
 
-    <!-- Floating Audio Control Button -->
     <div class="audio-toggle" id="audioToggle" title="Play/Pause Music">
         <i class="fas fa-volume-mute" id="audioIcon"></i>
     </div>
@@ -398,35 +487,29 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
-        
-        <!-- Video Background Container (UPDATED FOR MOBILE SUPPORT) -->
         <div class="video-background-wrapper">
-            <!-- Added playsinline, webkit-playsinline, preload="auto", and poster -->
             <video autoplay loop muted playsinline webkit-playsinline preload="auto" poster="image/fallback.jpg" class="video-background">
                 <source src="image/back.mp4" type="video/mp4">
             </video>
         </div>
-
         <div class="container">
             <div class="row align-items-center">
-                <!-- Text Area -->
                 <div class="col-lg-7 reveal active order-2 order-lg-1 mt-4 mt-lg-0">
-                    <p class="hero-subtitle">Hello, I'm</p>
-                    <h1 class="hero-title">Sunil Kumar Nayak</h1>
-                    <div class="typing-text" id="typewriter"></div>
-                    <div class="mt-2">
-                        <a href="#projects" class="btn-custom me-2">View Projects</a>
-                        <a href="#contact" class="btn-outline-custom">Contact Me</a>
+                    <div class="hero-content-box">
+                        <p class="hero-subtitle">Hello, I'm</p>
+                        <h1 class="hero-title">Sunil Kumar Nayak</h1>
+                        <div class="typing-text" id="typewriter"></div>
+                        <div class="mt-2">
+                            <a href="#projects" class="btn-custom">View Projects</a>
+                            <a href="#contact" class="btn-outline-custom">Contact Me</a>
+                        </div>
                     </div>
                 </div>
-                
-                <!-- Profile Image Area -->
                 <div class="col-lg-5 text-center reveal active order-1 order-lg-2">
                     <div class="profile-wrapper">
                         <img src="image/Img.jpeg" alt="Sunil Kumar Nayak" class="profile-img">
                     </div>
                 </div>
-                
             </div>
         </div>
     </section>
@@ -441,17 +524,6 @@
                     <p style="color: var(--text-light); line-height: 1.8;">
                         I am a passionate Full-Stack Developer with expertise in building scalable, secure, and high-performance applications. With hands-on experience in <strong>Java Spring Boot, Microservices, AWS Cloud, and DevOps</strong>, I take end-to-end ownership across development, testing, and deployment.
                     </p>
-                    <p style="color: var(--text-light); line-height: 1.8;">
-                        Currently working at <strong>Goldman Sachs</strong> via Coforge, I specialize in the Investment Banking domain, developing risk and security platforms, optimizing databases, and deploying containerized applications.
-                    </p>
-                    <div class="row mt-4">
-                        <div class="col-md-6 mb-3">
-                            <i class="fas fa-graduation-cap text-info me-2"></i> <strong>Education:</strong> MCA (NIIS)
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <i class="fas fa-certificate text-info me-2"></i> <strong>Certifications:</strong> AWS Cloud, IoT 4.0, MIS
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -464,51 +536,37 @@
             <div class="row g-4">
                 <div class="col-md-6 col-lg-3">
                     <div class="skill-box">
-                        <i class="fab fa-java skill-icon"></i>
-                        <h4>Backend</h4>
+                        <i class="fab fa-java skill-icon"></i><h4>Backend</h4>
                         <ul class="skill-list mt-3">
-                            <li>Java 8/17</li>
-                            <li>Spring Boot, MVC, Data JPA</li>
-                            <li>Microservices Architecture</li>
-                            <li>REST APIs, Kafka</li>
-                            <li>Spring Security, OAuth2</li>
+                            <li>Java 8/17</li><li>Spring Boot, MVC, Data JPA</li><li>Microservices Architecture</li>
+                            <li>REST APIs, Kafka</li><li>Spring Security, OAuth2</li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-3">
                     <div class="skill-box">
-                        <i class="fab fa-aws skill-icon"></i>
-                        <h4>Cloud (AWS)</h4>
+                        <i class="fab fa-aws skill-icon"></i><h4>Cloud (AWS)</h4>
                         <ul class="skill-list mt-3">
-                            <li>EC2, S3, RDS, VPC</li>
-                            <li>IAM, CloudWatch, SNS</li>
-                            <li>Route53, EBS, Glacier</li>
-                            <li>AWS EKS (Kubernetes)</li>
+                            <li>EC2, S3, RDS, VPC</li><li>IAM, CloudWatch, SNS</li>
+                            <li>Route53, EBS, Glacier</li><li>AWS EKS (Kubernetes)</li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-3">
                     <div class="skill-box">
-                        <i class="fas fa-server skill-icon"></i>
-                        <h4>DevOps & Tools</h4>
+                        <i class="fas fa-server skill-icon"></i><h4>DevOps & Tools</h4>
                         <ul class="skill-list mt-3">
-                            <li>Docker & Kubernetes</li>
-                            <li>Jenkins CI/CD Pipelines</li>
-                            <li>HashiCorp Vault</li>
-                            <li>Git, GitLab, Bitbucket</li>
-                            <li>JUnit, Mockito, SonarQube</li>
+                            <li>Docker & Kubernetes</li><li>Jenkins CI/CD Pipelines</li>
+                            <li>HashiCorp Vault</li><li>Git, GitLab, Bitbucket</li><li>JUnit, Mockito, SonarQube</li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-3">
                     <div class="skill-box">
-                        <i class="fas fa-database skill-icon"></i>
-                        <h4>Database & UI</h4>
+                        <i class="fas fa-database skill-icon"></i><h4>Database & UI</h4>
                         <ul class="skill-list mt-3">
-                            <li>MySQL, Oracle, MongoDB</li>
-                            <li>Redis Cache, DynamoDB</li>
-                            <li>HTML, CSS, Bootstrap</li>
-                            <li>Angular & Vue JS Basics</li>
+                            <li>MySQL, Oracle, MongoDB</li><li>Redis Cache, DynamoDB</li>
+                            <li>HTML, CSS, Bootstrap</li><li>Angular & Vue JS Basics</li>
                         </ul>
                     </div>
                 </div>
@@ -523,21 +581,17 @@
             <div class="row justify-content-center">
                 <div class="col-lg-10">
                     <div class="experience-card">
-                        
                         <img src="image/logo.png" alt="GS Logo" class="experience-logo">
-
                         <div class="experience-card-content">
                             <div class="d-flex justify-content-between align-items-start align-items-sm-center mb-3 flex-column flex-sm-row">
-                                <h4 class="mb-2 mb-sm-0 text-white">Senior Engineer (Java Developer)</h4>
+                                <h4 class="mb-2 mb-sm-0 text-white">Java Developer</h4>
                                 <span class="badge bg-primary px-3 py-2">04/2023 - Present</span>
                             </div>
-                            <h6 class="text-info mb-3">Coforge Limited (Client: Goldman Sachs)</h6>
+                            <h6 class="text-info mb-3">Goldman Sachs</h6>
                             <p style="font-size: 0.95rem; line-height: 1.6;">Currently engaged at Goldman Sachs, responsible for designing, developing microservices and enterprise-level solutions for the Investment Banking domain.</p>
+                            <p style="font-size: 0.95rem; line-height: 1.6;"> I specialize in the Investment Banking domain, developing risk and security platforms, optimizing databases, and deploying containerized applications.</p>
                             <ul style="font-size: 0.95rem; line-height: 1.6; padding-left: 20px;">
-                                <li>Developed Deal Management platform processing 10K+ requests/day with latency <200ms.</li>
-                                <li>Built 8+ microservices utilizing Eureka, API Gateway, Circuit Breaker, improving modularity.</li>
-                                <li>Optimized database load by 40% using Redis caching and query tuning.</li>
-                                <li>Automated CI/CD workflows using Jenkins and containerized apps via Docker/K8s.</li>
+            
                             </ul>
                         </div>
                     </div>
@@ -553,38 +607,41 @@
             <div class="row g-4">
                 
                 <div class="col-lg-4 col-md-6">
-                    <div class="project-card">
-                        <h3 class="project-title">IBD Financial Solutions</h3>
+                    <div class="project-card" onclick="openBook('ibd')">
+                        <h3 class="project-title">IBD Financial Solutions – Goldman Sachs Bank</h3>
                         <div class="mb-3">
                             <span class="badge badge-tech">Spring Boot</span>
                             <span class="badge badge-tech">Microservices</span>
                             <span class="badge badge-tech">AWS</span>
                         </div>
-                        <p class="project-desc">Goldman Sachs in-house Risk & Security platform. Designed REST APIs secured with OAuth2/JWT. Provisioned AWS infrastructure and deployed applications on Kubernetes (Blue-Green deployment).</p>
+                        <p class="project-desc">Goldman Sachs in-house Risk & Security platform. Designed REST APIs secured with OAuth2/JWT. Provisioned AWS infrastructure and deployed applications on Kubernetes.</p>
+                        <span class="project-hint">Click to Open <i class="fas fa-book-open ms-1"></i></span>
                     </div>
                 </div>
 
                 <div class="col-lg-4 col-md-6">
-                    <div class="project-card">
-                        <h3 class="project-title">Financing Solution (IBD)</h3>
+                    <div class="project-card" onclick="openBook('financing')">
+                        <h3 class="project-title">IBD Project Deal Origination</h3>
                         <div class="mb-3">
                             <span class="badge badge-tech">Vault</span>
                             <span class="badge badge-tech">Jenkins CI/CD</span>
                             <span class="badge badge-tech">FluentBit</span>
                         </div>
-                        <p class="project-desc">Provisioned HashiCorp Vault via Conduit for secret management. Configured FluentBit ingestion for centralized logging. Created declarative Jenkins pipelines optimizing end-to-end build workflows.</p>
+                        <p class="project-desc">Provisioned HashiCorp Vault via Conduit for secret management. Configured FluentBit ingestion for centralized logging. Created declarative Jenkins pipelines.</p>
+                        <span class="project-hint">Click to Open <i class="fas fa-book-open ms-1"></i></span>
                     </div>
                 </div>
 
                 <div class="col-lg-4 col-md-6">
-                    <div class="project-card">
+                    <div class="project-card" onclick="openBook('health')">
                         <h3 class="project-title">Health Insurance Platform</h3>
                         <div class="mb-3">
                             <span class="badge badge-tech">Spring Core</span>
                             <span class="badge badge-tech">REST API</span>
                             <span class="badge badge-tech">Hibernate/JPA</span>
                         </div>
-                        <p class="project-desc">Freelance project for a US client. Built a unified online platform for citizens to apply for health plans. Handled backend logic, Data JPA mapping, and exception handling for a stable application lifecycle.</p>
+                        <p class="project-desc">Freelance project for a US client. Built a unified online platform for citizens to apply for health plans. Handled backend logic, Data JPA mapping, and exceptions.</p>
+                        <span class="project-hint">Click to Open <i class="fas fa-book-open ms-1"></i></span>
                     </div>
                 </div>
 
@@ -595,65 +652,151 @@
     <!-- Contact Section -->
     <section id="contact" class="bg-darker reveal">
         <div class="container">
-            <h2 class="section-title">Get In Touch</h2>
+            <h2 class="section-title">Contact Me</h2>
             <div class="row justify-content-center">
                 <div class="col-lg-10">
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="contact-item">
-                                <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-                                <div class="contact-text">
-                                    <h5>Email</h5>
-                                    <a href="mailto:sunilkumar.skn03@gmail.com">sunilkumar.skn03@gmail.com</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="contact-item">
-                                <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
-                                <div class="contact-text">
-                                    <h5>Phone</h5>
-                                    <p>+91 9348726002</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="contact-item">
-                                <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-                                <div class="contact-text">
-                                    <h5>Location</h5>
-                                    <p>Bengaluru, Karnataka, India</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="contact-item">
-                                <div class="contact-icon"><i class="fab fa-github"></i></div>
-                                <div class="contact-text">
-                                    <h5>GitHub</h5>
-                                    <a href="https://github.com/SunilKumarNayak02" target="_blank">github.com/SunilKumarNayak02</a>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="col-md-6"><div class="contact-item"><div class="contact-icon"><i class="fas fa-envelope"></i></div><div class="contact-text"><h5>Email</h5><a href="mailto:sunilkumar.skn03@gmail.com">sunilkumar.skn03@gmail.com</a></div></div></div>
+                        <div class="col-md-6"><div class="contact-item"><div class="contact-icon"><i class="fas fa-phone-alt"></i></div><div class="contact-text"><h5>Phone</h5><p>+91 9348726002</p></div></div></div>
+                        <div class="col-md-6"><div class="contact-item"><div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div><div class="contact-text"><h5>Location</h5><p>Bengaluru, Karnataka, India</p></div></div></div>
+                        <div class="col-md-6"><div class="contact-item"><div class="contact-icon"><i class="fab fa-github"></i></div><div class="contact-text"><h5>GitHub</h5><a href="https://github.com/SunilKumarNayak02" target="_blank">github.com/SunilKumarNayak02</a></div></div></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="py-4 text-center" style="background-color: rgba(15,23,42,1); border-top: 1px solid rgba(255,255,255,0.05);">
-        <p class="mb-0" style="color: var(--text-muted); font-size: 0.9rem;">
-            &copy; 2024 Sunil Kumar Nayak. Built with Custom UI & Bootstrap 5.
-        </p>
+        <p class="mb-0" style="color: var(--text-muted); font-size: 0.9rem;">&copy; 2024 Sunil Kumar Nayak. Built with Custom UI & Bootstrap 5.</p>
     </footer>
 
-    <!-- Bootstrap JS Bundle -->
+    <!-- 3D BOOK MODAL OVERLAY -->
+    <div class="book-modal-wrapper" id="bookModalWrapper">
+        <button class="book-close-btn" onclick="closeBook()"><i class="fas fa-times"></i></button>
+        <div class="book-core" id="bookCore">
+            <!-- Right Page (Inside Content) -->
+            <div class="book-page-right">
+                <h4 style="color: var(--accent); margin-bottom: 15px;">Roles & Responsibilities</h4>
+                <ul class="resp-list" id="bookRespList">
+                    <!-- Populated dynamically -->
+                </ul>
+            </div>
+            
+            <!-- Cover (Left Side) -->
+            <div class="book-cover" id="bookCover">
+                <!-- Front of Cover -->
+                <div class="cover-front">
+                    <i class="fas fa-laptop-code text-white mb-3" style="font-size: 3rem;"></i>
+                    <h2 id="bookTitleFront" style="font-weight: 700; font-size: 2rem;">Project Title</h2>
+                    <p style="color: var(--accent); font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase;">Goldman Sachs</p>
+                </div>
+                <!-- Back of Cover (Left Page inside) -->
+                <div class="cover-back">
+                    <h3 id="bookTitleInside" style="color: #fff; margin-bottom: 20px;">Project Title</h3>
+                    <div style="background: rgba(14,165,233,0.1); padding: 15px; border-radius: 8px; border: 1px solid rgba(14,165,233,0.3); margin-bottom: 20px;">
+                        <h6 style="color: var(--accent); margin-bottom: 8px;">Tech Stack</h6>
+                        <p id="bookTech" style="color: var(--text-light); font-size: 0.9rem; margin: 0;"></p>
+                    </div>
+                    <p id="bookDesc" style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Custom JS -->
     <script>
-        // --- AUDIO PLAYER LOGIC ---
+        // --- DATA FOR BOOK MODAL ---
+        const projectData = {
+            'ibd': {
+                title: 'IBD Financial Solutions',
+                tech: 'Spring Boot • Microservices • Angular • Vue JS • Oracle • AWS',
+                desc: 'Worked on Goldman Sachs in-house Risk & Security platform in investment banking domain.',
+                responsibilities: [
+                    'Developed Deal Management platform using Spring Boot, Microservices, AWS, handling 10K+ requests/day with latency <200 ms, improving release cycles by 20%.',
+                    'Built 8+ microservices with Eureka, Config Server, API Gateway, Feign Client, Circuit Breaker, load balancer, improving modularity, deployment time by 30%, and system resilience and develop data layers via JPA/CRUD and backward compatibility and partial updates & custom find By queries.',
+                    'Designed and secured REST APIs using Spring Security, OAuth2, JWT, and Rest Template with validation, versioning, exception handling, Spring Actuator/Admin monitoring for improving stability.',
+                    'Optimized performance using Redis caching, query tuning, pagination, BLOB/CLOB handling, reducing DB load by 40% and response time by 25–30%.',
+                    'Worked in Agile/Scrum environment, participated in sprint planning, stand-ups & retrospectives.',
+                    'Integrated Razorpay, Stripe, implemented batch jobs, and ensured quality via JUnit, Mockito, JaCoCo (80%+ coverage) in Agile/Scrum with Jira, GitLab.',
+                    'Provisioned AWS infra: EC2, VPC, Subnets, SG, IGW, Route Tables, NACLs, Managed RDS (SQL/ Aurora) & S3 with Object Lock & Lifecycle rules, Secured access via IAM monitored using CloudWatch, SNS & Lambda.',
+                    'Automated infra using CloudFormation & Terraform, Containerized apps via Docker (Images, Volumes, Networking, Hub), Deployed on Kubernetes (Master/Worker, HPA, Replica Sets, Blue-Green), reducing infra effort by 50% and cost by 20%.'
+                ]
+            },
+            'financing': {
+                title: 'Financing Solution (IBD)',
+                tech: 'HashiCorp Vault • Jenkins • FluentBit • Prometheus • Grafana',
+                desc: 'Financing Solution, IBD Project Deal Origination. Worked on Goldman Sachs in-house Risk & Security platform in investment banking domain.',
+                responsibilities: [
+                    'Provisioned HashiCorp Vault via Conduit, configuring hierarchy, identities & Linux auth for system ac.',
+                    'Secrets delivery using SecurePush managing secrets.conf, activation profiles & copy scripts.',
+                    'Integrated Vault with host deployments via Conduit pipelines, release tags & approved GCM workflows.',
+                    'Validated credential distribution via PACT ensuring secure storage, access control & runtime fetch.',
+                    'Identified vulnerable Tomcat versions via mvn dependency:tree analyzing transitive dependencies. Traced parent POM sources & excluded unused vulnerable Tomcat artifacts. Upgraded Spring & related dependencies ensuring vulnerability compliance.',
+                    'Onboarded BQL tenants via Airlock creating MRs, provisioning namespaces & validating log UI visibility.',
+                    'Configured FluentBit ingestion via GNS subscriptions, ingest endpoints & Conduit logging pipelines. Implemented JSON parsers, custom log mappings & start/stop scripts managing FluentBit runtimes.',
+                    'Deployed configs across UAT/Prod, validated log flows & scheduled Autosys jobs for process automation.',
+                    'Configured centralized settings via Spring Cloud Config with Admin Server & Zipkin tracing.',
+                    'Ensured quality via unit, integration & E2E testing using JUnit, Mockito & JaCoCo.',
+                    'Developed REST APIs via RestTemplate with validation & exception handling.',
+                    'Secrets monitored via Prometheus/Grafana. Written Jenkins CI/CD (Declarative, Scripted Pipeline Scripts).',
+                    'Implemented Jenkins Master and Slave (Agent) architecture and developed Declarative Pipelines with email notifications, parallel stages, and shared libraries to automate and optimize end-to-end build and deployment workflows.'
+                ]
+            },
+            'health': {
+                title: 'Health Insurance Platform',
+                tech: 'Spring Core • Spring Boot • JPA/Hibernate • REST • Jenkins',
+                desc: 'Freelancing Project, Client: USA California. Provides a unified online platform for California citizens to apply for health and insurance plans based on profiles.',
+                responsibilities: [
+                    'Worked on Spring Core: IoC, Dependency Injection, Bean lifecycle, annotation and XML configuration.',
+                    'Developed apps using Spring Boot with auto-configuration, starters, and dependency management.',
+                    'Built REST APIs using @RestController, @GetMapping, @PostMapping with JSON/XML conversion.',
+                    'Configured YAML, profiles, and injected values using @Value and @Configuration.',
+                    'Used Spring Boot features: DataSource auto-config, runners, and component scanning.',
+                    'Integrated Spring Data JPA for CRUD, entity mapping, transactions, and repositories.',
+                    'Applied validation, exception handling, and logging for stable applications.',
+                    'Installed and configured Jenkins, created Jenkins jobs integrated with Git, Maven, and Tomcat, and configured build parameters, user creation, and role-based access control for secure CI/CD execution.',
+                    'Worked with Jenkins Scripted Pipelines and configured Multi-Branch Pipelines to handle multiple Git branches and automate branch-based build and deployment processes.'
+                ]
+            }
+        };
+
+        const modalWrapper = document.getElementById('bookModalWrapper');
+        const bookCore = document.getElementById('bookCore');
+        
+        function openBook(projectId) {
+            const data = projectData[projectId];
+            if(!data) return;
+
+            document.getElementById('bookTitleFront').innerText = data.title;
+            document.getElementById('bookTitleInside').innerText = data.title;
+            document.getElementById('bookTech').innerText = data.tech;
+            document.getElementById('bookDesc').innerText = data.desc;
+            
+            const listContainer = document.getElementById('bookRespList');
+            listContainer.innerHTML = ''; 
+            data.responsibilities.forEach(item => {
+                const li = document.createElement('li');
+                li.innerText = item;
+                listContainer.appendChild(li);
+            });
+
+            // Fast display & animate
+            modalWrapper.classList.add('active');
+            setTimeout(() => {
+                bookCore.classList.add('open');
+            }, 10); // Instant response to click
+        }
+
+        function closeBook() {
+            bookCore.classList.remove('open');
+            // Wait 600ms (so the 700ms closing animation is almost finished) before fading out background
+            setTimeout(() => {
+                modalWrapper.classList.remove('active');
+            }, 600); 
+        }
+
+        // --- AUDIO & OTHER LOGIC ---
         const bgAudio = document.getElementById('bg-audio');
         const audioToggle = document.getElementById('audioToggle');
         const audioIcon = document.getElementById('audioIcon');
@@ -665,92 +808,47 @@
                     hasPlayed = true;
                     audioIcon.classList.remove('fa-volume-mute');
                     audioIcon.classList.add('fa-volume-up');
-                    
                     window.removeEventListener('scroll', playAudioOnce);
                     document.removeEventListener('click', playAudioOnce);
-                }).catch(err => {
-                    console.log("Waiting for user interaction to play audio...");
-                });
+                }).catch(err => { console.log("Waiting for interaction..."); });
             }
         }
-
         window.addEventListener('scroll', playAudioOnce);
         document.addEventListener('click', playAudioOnce);
 
         audioToggle.addEventListener('click', (e) => {
             e.stopPropagation(); 
-            if (bgAudio.paused) {
-                bgAudio.play();
-                audioIcon.classList.remove('fa-volume-mute');
-                audioIcon.classList.add('fa-volume-up');
-                hasPlayed = true;
-            } else {
-                bgAudio.pause();
-                audioIcon.classList.remove('fa-volume-up');
-                audioIcon.classList.add('fa-volume-mute');
-            }
+            if (bgAudio.paused) { bgAudio.play(); audioIcon.classList.replace('fa-volume-mute', 'fa-volume-up'); hasPlayed = true; } 
+            else { bgAudio.pause(); audioIcon.classList.replace('fa-volume-up', 'fa-volume-mute'); }
         });
+        bgAudio.addEventListener('ended', () => { audioIcon.classList.replace('fa-volume-up', 'fa-volume-mute'); });
 
-        bgAudio.addEventListener('ended', () => {
-            audioIcon.classList.remove('fa-volume-up');
-            audioIcon.classList.add('fa-volume-mute');
-        });
-
-        // --- EXISTING LOGIC ---
         const navLinks = document.querySelectorAll('.nav-link');
         const menuToggle = document.getElementById('navbarNav');
         const bsCollapse = new bootstrap.Collapse(menuToggle, {toggle: false});
-        navLinks.forEach((l) => {
-            l.addEventListener('click', () => { if (menuToggle.classList.contains('show')) { bsCollapse.toggle() } })
-        });
+        navLinks.forEach((l) => { l.addEventListener('click', () => { if (menuToggle.classList.contains('show')) bsCollapse.toggle(); }) });
 
-        // Typing Effect Logic
         const textArray = ["Java Backend Developer.", "Spring Boot Expert.", "AWS Cloud Enthusiast.", "DevOps Engineer."];
-        let textIndex = 0;
-        let charIndex = 0;
-        const typeTarget = document.getElementById("typewriter");
-
+        let textIndex = 0, charIndex = 0; const typeTarget = document.getElementById("typewriter");
         function type() {
             if (charIndex < textArray[textIndex].length) {
-                typeTarget.innerHTML += textArray[textIndex].charAt(charIndex);
-                charIndex++;
-                setTimeout(type, 100);
-            } else {
-                setTimeout(erase, 2000);
-            }
+                typeTarget.innerHTML += textArray[textIndex].charAt(charIndex); charIndex++; setTimeout(type, 100);
+            } else setTimeout(erase, 2000);
         }
-
         function erase() {
             if (charIndex > 0) {
-                typeTarget.innerHTML = textArray[textIndex].substring(0, charIndex - 1);
-                charIndex--;
-                setTimeout(erase, 50);
-            } else {
-                textIndex++;
-                if (textIndex >= textArray.length) textIndex = 0;
-                setTimeout(type, 500);
-            }
+                typeTarget.innerHTML = textArray[textIndex].substring(0, charIndex - 1); charIndex--; setTimeout(erase, 50);
+            } else { textIndex++; if (textIndex >= textArray.length) textIndex = 0; setTimeout(type, 500); }
         }
+        document.addEventListener("DOMContentLoaded", () => setTimeout(type, 1000));
 
-        document.addEventListener("DOMContentLoaded", function() {
-            setTimeout(type, 1000);
-        });
-
-        // Scroll Reveal Animation
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementVisible = 120;
-
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add("active");
-                }
+                if (reveals[i].getBoundingClientRect().top < window.innerHeight - 120) reveals[i].classList.add("active");
             }
         }
-        window.addEventListener("scroll", reveal);
-        reveal(); 
+        window.addEventListener("scroll", reveal); reveal(); 
     </script>
 </body>
 </html>
